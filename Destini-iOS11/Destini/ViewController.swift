@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var topButton: UIButton!         // Has TAG = 1
     @IBOutlet weak var bottomButton: UIButton!      // Has TAG = 2
     @IBOutlet weak var storyTextView: UILabel!
+    @IBOutlet weak var restartButton: UIButton!
     
     // variables
     var storyTree : CustomStory = CustomStory()
@@ -25,9 +26,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        storyTree = CustomStory()
-        renderStory(story: storyTree.getHeadStory())
-        currentStory = storyTree.getHeadStory()
+        
+        restart()
     }
 
     
@@ -48,13 +48,29 @@ class ViewController: UIViewController {
         renderStory(story: currentStory!)
     }
     
+    @IBAction func restartButtonPressed(_ sender: UIButton) {
+        restart()
+    }
+    
     func renderStory( story : Story ) {
         storyTextView.text = story.story
+        if( story.leftAnswer == "" && story.rightAnswer == "" ) {
+            topButton.isHidden = true
+            bottomButton.isHidden = true
+            restartButton.isHidden = false
+        }
         topButton.setTitle(story.leftAnswer, for: .normal)
         bottomButton.setTitle(story.rightAnswer, for: .normal)
     }
-
-
+    
+    func restart() {
+        currentStory = storyTree.getHeadStory()
+        restartButton.isHidden = true
+        topButton.isHidden = false
+        bottomButton.isHidden = false
+        renderStory(story: storyTree.getHeadStory())
+    }
+    
 
 }
 
